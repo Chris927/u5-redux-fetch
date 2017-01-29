@@ -1,5 +1,4 @@
 import configureMockStore from 'redux-mock-store'
-import fetchMock from 'fetch-mock'
 
 import apiMiddleware from '..'
 
@@ -31,7 +30,7 @@ describe('middleware', () => {
     ]
     const store = mockStore({})
 
-    fetchMock.post('*', { data: expectedData })
+    fetch.mockResponse(JSON.stringify({ data: expectedData }))
     return store.dispatch({
       type: 'this type should not matter',
       [CALL_API]: {

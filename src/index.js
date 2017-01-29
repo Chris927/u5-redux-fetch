@@ -1,15 +1,19 @@
 //@flow
 import invariant from 'invariant'
+import type { Store, Action } from 'redux';
 
 // API Approach roughly taken from
 // https://github.com/reactjs/redux/blob/master/examples/real-world/src/middleware/api.js
 // Specifically implemented to support GraphQL queries and mutations
 
-import 'isomorphic-fetch'
+// import fetch from 'isomorphic-fetch'
 
 export default (config: {
   apiEndpoint: string | Function,
-  symbol: string | Symbol
+  symbol: string | Symbol,
+  apiErrorOccurred: ?Function,
+  requestAction: ?string,
+  errorAction: ?string
 }) => {
 
   invariant(config.apiEndpoint, 'Need apiEndpoint in action')
@@ -26,7 +30,7 @@ export default (config: {
   const API_REQUEST = config.requestAction || 'API_REQUEST'
   const API_ERROR = config.errorAction || 'API_ERROR'
 
-  const apiErrorOccurred = config.apiErrorOccurred || (err => {
+  const apiErrorOccurred: Function = config.apiErrorOccurred || (err => {
     console.log('api error', err)
     // alert('API Error: ' + err.message)
     return { type: API_ERROR, data: { message: err.message } }
@@ -34,7 +38,7 @@ export default (config: {
 
   // A Redux middleware that interprets actions with CALL_API info specified.
   // Performs the call and promises when such actions are dispatched.
-  return store => next => action => {
+  return (store: Store) => (next: Function) => (action: Action) => {
     const callAPI = action[CALL_API]
     if (typeof callAPI === 'undefined') {
       return next(action)
@@ -51,7 +55,7 @@ export default (config: {
       console.log('api', action)
       next({ type: API_REQUEST })
       return apiEndpoint
-    }).then(apiEndpoint => fetch(apiEndpoint, {
+    }).then(apiEndpoint => Promise.all([ fetch(apiEndpoint, {
       method: 'post',
       credentials: 'include',
       headers: {
@@ -59,7 +63,11 @@ export default (config: {
         authorization: callAPI.authorization
       },
       body: JSON.stringify({ query, variables })
-    })).then(response => {
+    }), apiEndpoint ])).then(([ response, endpoint ]) => {
+      if (response.status >= 300) {
+        console.log('response', response.status, response)
+        throw new Error(response.statusText || `bad response from ${ endpoint }`)
+      }
       return Promise.all([ response, response.json() ])
     }).then(([ response, json]) => {
 
