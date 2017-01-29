@@ -1,0 +1,27 @@
+{
+  "name": "u5-redux-fetch",
+  "version": "0.0.1",
+  "description": "Redux middleware to fetch from an API",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Chris927/u5-redux-fetch.git"
+  },
+  "keywords": [
+    "redux",
+    "fetch",
+    "middleware",
+    "query",
+    "api",
+    "REST"
+  ],
+  "author": "Chris Oloff <chris@uber5.com> (http://about.uber5.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Chris927/u5-redux-fetch/issues"
+  },
+  "homepage": "https://github.com/Chris927/u5-redux-fetch#readme"
+}
