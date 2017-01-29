@@ -56,7 +56,7 @@ export default (config: {
       next({ type: API_REQUEST })
       return apiEndpoint
     }).then(apiEndpoint => Promise.all([ fetch(apiEndpoint, {
-      method: 'post',
+      method: 'POST',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
