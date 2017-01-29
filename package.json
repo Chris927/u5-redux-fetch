@@ -1,10 +1,11 @@
 {
   "name": "u5-redux-fetch",
   "version": "0.0.1",
-  "description": "Redux middleware to fetch from an API",
+  "description": "Redux middleware to fetch from a GraphQL API",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "npm test -- --watch"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,25 @@
   "bugs": {
     "url": "https://github.com/Chris927/u5-redux-fetch/issues"
   },
-  "homepage": "https://github.com/Chris927/u5-redux-fetch#readme"
+  "homepage": "https://github.com/Chris927/u5-redux-fetch#readme",
+  "devDependencies": {
+    "babel-cli": "6.22.2",
+    "babel-plugin-transform-flow-strip-types": "6.22.0",
+    "babel-preset-es2015": "6.22.0",
+    "babel-preset-stage-2": "6.22.0",
+    "fetch-mock": "5.9.0",
+    "flow-bin": "0.38.0",
+    "jest": "18.1.0",
+    "redux-mock-store": "1.2.1",
+    "rimraf": "2.5.4",
+    "source-map-support": "0.4.11"
+  },
+  "peerDependencies": {
+    "redux": "^2.0.0 || ^3.0.0"
+  },
+  "dependencies": {
+    "invariant": "2.2.2",
+    "isomorphic-fetch": "2.2.1",
+    "redux": "^2.0.0 || ^3.0.0"
+  }
 }
