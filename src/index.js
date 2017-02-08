@@ -86,7 +86,7 @@ export default (config: {
         type: responseType,
         data: json.data,
         query,
-        variables
+        values: variables
       })
 
     }).catch(err => {

@@ -25,7 +25,7 @@ describe('middleware', () => {
         type: QUERY1_RECEIVED,
         data: expectedData,
         query: 'query 1',
-        variables: { some: 'value' }
+        values: { some: 'value' }
       }
     ]
     const store = mockStore({})
