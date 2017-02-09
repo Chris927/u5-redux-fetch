@@ -15,9 +15,10 @@ const middlewares = [ apiMiddleware({
 const mockStore = configureMockStore(middlewares)
 
 describe('middleware', () => {
-  it('dispatches a "request" action', () => {
 
-    const expectedData = { bla: 42 }
+  const expectedData = { bla: 42 }
+
+  it('dispatches a "request" action', () => {
 
     const expectedActions = [
       { type: API_QUERY_REQUESTED },
@@ -42,5 +43,39 @@ describe('middleware', () => {
     }).then(() => {
       expect(store.getActions()).toEqual(expectedActions)
     })
+  })
+
+  it('dispatches a full action on success, if given', () => {
+
+    const additionalProp = { key: 'value' }
+
+    const expectedActions = [
+      { type: API_QUERY_REQUESTED },
+      {
+        type: 'MY_SUCCESS_ACTION',
+        additionalProp: { key: 'value'},
+        data: expectedData,
+        query: 'query 1',
+        values: { some: 'value' }
+      }
+    ]
+    const store = mockStore({})
+
+    fetch.mockResponse(JSON.stringify({ data: expectedData }))
+    return store.dispatch({
+      type: 'this type should not matter',
+      [CALL_API]: {
+        successAction: {
+          type: 'MY_SUCCESS_ACTION',
+          additionalProp
+        },
+        query: 'query 1',
+        variables: { some: 'value' },
+        authorization: 'Bearer 123'
+      }
+    }).then(() => {
+      expect(store.getActions()).toEqual(expectedActions)
+    })
+
   })
 })

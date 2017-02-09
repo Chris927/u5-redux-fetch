@@ -49,7 +49,10 @@ export default (config: {
 
     return Promise.resolve(apiEndpointFn())
     .then(apiEndpoint => {
-      invariant(typeof responseType === 'string', 'Requires "responseType" of type string')
+      invariant(
+        typeof responseType === 'string' || typeof callAPI.successAction === 'object',
+        'Requires "responseType" of type string or "successAction" of type object'
+      )
       invariant(typeof query === 'string', 'Requires "query" of type string')
 
       console.log('api', action)
@@ -82,12 +85,19 @@ export default (config: {
         throw new Error(response.statusText || 'bad response')
       }
 
-      return next({
-        type: responseType,
-        data: json.data,
-        query,
-        values: variables
-      })
+      const successAction = callAPI.successAction
+        ? Object.assign({
+            data: json.data,
+            query,
+            values: variables
+          }, callAPI.successAction)
+        : {
+          type: responseType,
+          data: json.data,
+          query,
+          values: variables
+        }
+      return next(successAction)
 
     }).catch(err => {
       console.log('api, err', err.stack)
