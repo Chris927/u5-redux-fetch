@@ -1,6 +1,6 @@
 {
   "name": "u5-redux-fetch",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Redux middleware to fetch from a GraphQL API",
   "main": "dist/index.js",
   "scripts": {
